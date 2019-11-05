@@ -5,7 +5,7 @@ class Links
 {
     private $links;
 
-    public function __construct(array $links)
+    public function __construct(\stdClass $links)
     {
         $this->links = $links;
     }

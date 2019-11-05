@@ -1,97 +1,81 @@
 <?php
+
 namespace JsonApiParser\Tests;
 
-use JsonApiParser\Collections\Document;
 use JsonApiParser\Collections\DocumentItem;
-use JsonApiParser\JsonApi;
-use JsonApiParser\JsonApiParserException;
+use JsonApiParser\Exceptions\ParserException;
 use PHPUnit\Framework\TestCase;
+use JsonApiParser\Parser;
 
 class DocumentTest extends TestCase
 {
+    /**
+     * document store
+     *
+     * @var Document
+     */
+    private $document;
 
-    private $jsonapi;
 
     public function __construct()
     {
         parent::__construct();
-        $this->jsonapi = new JsonApi(file_get_contents('/var/www/json-api-parser/json-api.json'));
+        $parser = new Parser(\file_get_contents(__DIR__ . '/json/json-api.json'));
+        $this->document = $parser->data();
     }
 
-    public function testInstance()
+    /**
+     * Document item test
+     *
+     * @return void
+     */
+    public function testInstanceOf()
     {
-        $this->assertInstanceOf(Document::class, $this->jsonapi->data());
-    }
-
-    public function testGetItem()
-    {
-        $item = $this->jsonapi->data()->get(0);
-        $this->assertInstanceOf(DocumentItem::class, $item);
-
-        $this->assertEquals(1, $item->id());
-
-        $this->assertEquals("JSON:API paints my bikeshed!", $item->attribute('title'));
-
-        $this->assertEquals("JSON:API paints my bikeshed!", $item->attribute()->title);
-
-        $this->assertEquals("articles", $item->type());
-
-        $this->assertTrue($this->arrays_are_similar(['type', 'id', 'attributes', 'relationships', 'links'], $item->getKeys()));
-        $this->assertTrue($this->arrays_are_similar(['title'], $item->getKeys('attributes')));
-
-        $this->assertEquals("http://example.com/articles/1", $item->links('self'));
-        $this->assertEquals("http://example.com/articles/1", $item->links()->self);
-
-    }
-
-    public function testGetWrongException()
-    {
-        $this->expectException(JsonApiParserException::class);
-
-        $this->jsonapi->data()->get(2);
-    }
-    public function testGetWrongItemKeysException()
-    {
-
-        $item = $this->jsonapi->data()->get(1);
-        $this->expectException(JsonApiParserException::class);
-        $item->getKeys("unknown");
-
-    }
-
-    public function testRelationShip()
-    {
-        $item = $this->jsonapi->data()->get(0);
-        $this->assertInstanceOf(DocumentItem::class, $item);
-        $rel = $item->relationships('author');
-        $this->assertInstanceOf(JsonApi::class, $rel);
-
-        $docItem = $rel->data();
-        $this->assertInstanceOf(Document::class, $docItem);
-
-        $docItem = $docItem->get(0);
+        $docItem = $this->document->get(0);
         $this->assertInstanceOf(DocumentItem::class, $docItem);
-
-        $this->assertEquals(9,$docItem->id());
-        $this->assertEquals("people",$docItem->type());
-
     }
 
-    public function arrays_are_similar($a, $b)
+    /**
+     * test the first and last and count
+     *
+     * @return void
+     */
+    public function testFirstLastCount()
     {
-        // if the indexes don't match, return immediately
-        if (count(array_diff_assoc($a, $b))) {
-            return false;
-        }
-        // we know that the indexes, but maybe not values, match.
-        // compare the values between the two arrays
-        foreach ($a as $k => $v) {
-            if ($v !== $b[$k]) {
-                return false;
-            }
-        }
-        // we have identical indexes, and no unequal values
-        return true;
+        $docItem = $this->document->first();
+        $this->assertEquals(0, $docItem->index());
+
+        $docItem = $this->document->last();
+        $this->assertEquals(1, $docItem->index());
+
+        $this->assertEquals(2, $this->document->count());
     }
 
+    /**
+     * Test undefined index 
+     *
+     * @return void
+     */
+    public function testUndefinedException()
+    {
+        $this->expectException(ParserException::class);
+        $this->document->get(2);
+    }
+
+
+    /**
+     * iteration test
+     *
+     * @return void
+     */
+    public function testIteration()
+    {
+        $i = 0;
+        foreach ($this->document as $index => $item) {
+            $this->assertEquals($i, $index);
+            $this->assertInstanceOf(DocumentItem::class, $item);
+            $i++;
+        }
+        $this->assertEquals(2, $i);
+    }
 }

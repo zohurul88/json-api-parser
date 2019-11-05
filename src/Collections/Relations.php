@@ -5,24 +5,23 @@ class Relations
 {
     private $items = [];
 
-    private $shortedItems = [];
+    private $sortItems = [];
 
     public function __construct(array $included)
     {
         $this->items = $included;
-        $this->shortedItems();
+        $this->shortItems();
     }
 
     public function shortItems()
     {
         foreach ($this->items as $i => $item) {
-            $this->shortedItems[$item->type][$item->id] = $i;
+            $this->sortItems[$item->type][$item->id] = $i;
         }
     }
 
     public function get($type, $id)
     {
-        return $this->items[$this->shortedItems[$type][$id]] ?? null;
+        return $this->items[$this->sortItems[$type][$id]] ?? null;
     }
-
 }

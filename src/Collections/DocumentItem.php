@@ -1,18 +1,31 @@
 <?php
+
 namespace JsonApiParser\Collections;
 
 use JsonApiParser\JsonApi;
-use JsonApiParser\JsonApiParserException;
+use JsonApiParser\ParserException;
 
 class DocumentItem
 {
     private $item;
 
-    private $document;
+    private $index = null;
 
-    public function __construct(\stdClass $item)
+    public function __construct(\stdClass $item, int $index)
     {
         $this->item = (array) $item;
+        $this->index = $index;
+    }
+
+    /**
+     * current index
+     *
+     * @return integer|null
+     * @since 1.0.0
+     */
+    public function index(): ?int
+    {
+        return $this->index;
     }
 
     /**
@@ -74,12 +87,11 @@ class DocumentItem
             return array_keys($this->item);
         }
         if (!isset($this->item[$identifier])) {
-            throw new JsonApiParserException("{$identifier} is an invalid index");
+            throw new ParserException("{$identifier} is an invalid index");
         }
         $item = (array) $this->item[$identifier];
 
         return array_keys($item);
-
     }
 
     /**
@@ -101,11 +113,10 @@ class DocumentItem
     public function relationships($name)
     {
         if (!$this->contain($name, "relationships")) {
-            throw new JsonApiParserException("Relationship Not found.");
+            throw new ParserException("Relationship Not found.");
         }
 
         $relationship = $this->item['relationships']->{$name};
         return new JsonApi(json_encode($relationship));
     }
-
 }

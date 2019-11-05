@@ -46,7 +46,7 @@ class Errors implements Iterator
             return $this->current();
         }
         $this->position = $tmp;
-        throw new JsonApiParserException("{$i} index is undefined");
+        throw new ParserException("{$i} index is undefined");
     }
 
     public function first()
