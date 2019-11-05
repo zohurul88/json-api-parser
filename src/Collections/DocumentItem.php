@@ -1,11 +1,14 @@
 <?php
 namespace JsonApiParser\Collections;
 
+use JsonApiParser\JsonApi;
 use JsonApiParser\JsonApiParserException;
 
 class DocumentItem
 {
     private $item;
+
+    private $document;
 
     public function __construct(\stdClass $item)
     {
@@ -38,13 +41,11 @@ class DocumentItem
      * @param string|null $name
      * @return \stdClass|string|null
      */
-    public function links(?string $name = null)
+    public function links()
     {
-        if (is_null($name)) {
-            return $this->item['links'] ?? null;
+        if (isset($this->item['links'])) {
+            return new Links($this->item['links']);
         }
-
-        return $this->item['links']->{$name} ?? null;
     }
 
     /**
@@ -61,6 +62,12 @@ class DocumentItem
         return $this->item['attributes']->{$name} ?? null;
     }
 
+    /**
+     * get item keys
+     *
+     * @param string|null $identifier
+     * @return array
+     */
     public function getKeys(?string $identifier = null): array
     {
         if (is_null($identifier)) {
@@ -75,6 +82,13 @@ class DocumentItem
 
     }
 
+    /**
+     * if any key exists
+     *
+     * @param string $name
+     * @param string|null $identifier
+     * @return boolean
+     */
     public function contain(string $name, ?string $identifier = null): bool
     {
         if (!is_null($identifier)) {
@@ -84,11 +98,14 @@ class DocumentItem
         return isset($this->item['attribute']->{$name});
     }
 
-    public function getRelation($name)
+    public function relationships($name)
     {
-        if ($this->contain($name, "relationships")) {
-            return null;
+        if (!$this->contain($name, "relationships")) {
+            throw new JsonApiParserException("Relationship Not found.");
         }
+
+        $relationship = $this->item['relationships']->{$name};
+        return new JsonApi(json_encode($relationship));
     }
 
 }

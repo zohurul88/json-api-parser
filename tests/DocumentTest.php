@@ -59,6 +59,24 @@ class DocumentTest extends TestCase
 
     }
 
+    public function testRelationShip()
+    {
+        $item = $this->jsonapi->data()->get(0);
+        $this->assertInstanceOf(DocumentItem::class, $item);
+        $rel = $item->relationships('author');
+        $this->assertInstanceOf(JsonApi::class, $rel);
+
+        $docItem = $rel->data();
+        $this->assertInstanceOf(Document::class, $docItem);
+
+        $docItem = $docItem->get(0);
+        $this->assertInstanceOf(DocumentItem::class, $docItem);
+
+        $this->assertEquals(9,$docItem->id());
+        $this->assertEquals("people",$docItem->type());
+
+    }
+
     public function arrays_are_similar($a, $b)
     {
         // if the indexes don't match, return immediately

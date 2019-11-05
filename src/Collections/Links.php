@@ -1,15 +1,33 @@
 <?php
 namespace JsonApiParser\Collections;
 
-class Document
+class Links
 {
-    private $data;
+    private $links;
 
-    public function __construct(array $data)
+    public function __construct(array $links)
     {
-        $this->data = \DS\Vector($this->data);;
+        $this->links = $links;
     }
 
-    
+    public function __get($name)
+    {
+        return isset($this->links->{$name}) ?? null;
+    }
+
+    public function __call($name, $arguments)
+    {
+        return $this->get($name);
+    }
+
+    public function get($name)
+    {
+        return $this->{$name};
+    }
+
+    public function all()
+    {
+        return $this->links;
+    }
 
 }
