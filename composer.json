@@ -1,0 +1,42 @@
+{
+    "name": "zohurul/json-api-parser",
+    "description": "json:api response parser as https://jsonapi.org/",
+    "homepage": "https://github.com/zohurul88/json-api-parser",
+    "keywords": [
+        "json",
+        "api",
+        "json-api",
+        "client",
+        "reader",
+        "validator",
+        "parser"
+    ],
+    "license": "GPL-3.0-or-later",
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "7"
+    },
+    "autoload": {
+        "psr-4": {
+            "JsonApiParser\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "JsonApiParser\\Tests\\": "tests"
+        }
+    },
+    "authors": [
+        {
+            "name": "Zohurul Islam",
+            "email": "mail@zohurul.com",
+            "homepage": "https://zohurul.com"
+        }
+    ],
+    "require": {},
+    "scripts": {
+        "test": [
+            "./vendor/bin/phpunit --bootstrap vendor/autoload.php tests"
+        ]
+    }
+}
