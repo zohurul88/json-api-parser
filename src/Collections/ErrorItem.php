@@ -1,31 +1,68 @@
 <?php
+
 namespace JsonApiParser\Collections;
 
 class ErrorItem
 {
+    /**
+     * Error container
+     *
+     * @var array
+     * @since 1.0.0
+     */
     private $error;
 
+    /**
+     * error constructor
+     *
+     * @param array $error
+     */
     public function __construct(array $error)
     {
         $this->error = $error;
     }
 
-    public function code()
+    /**
+     * error code
+     *
+     * @return integer|null
+     * @since 1.0.0
+     */
+    public function code(): ?int
     {
         return $this->error->code ?? null;
     }
 
-    public function source()
+    /**
+     * error source
+     *
+     * @return string|null
+     * @since 1.0.0
+     */
+    public function source(): ?string
     {
         return $this->error->source ?? null;
     }
-    public function title()
+
+    /**
+     * error title
+     *
+     * @return string|null
+     * @since 1.0.0
+     */
+    public function title(): ?string
     {
         return $this->error->title ?? null;
     }
-    public function detail()
+
+    /**
+     * error details
+     *
+     * @return string|null
+     * @since 1.0.0
+     */
+    public function detail(): ?string
     {
         return $this->error->detail ?? null;
     }
-
 }

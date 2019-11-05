@@ -72,7 +72,7 @@ class ParserTest extends TestCase
         $this->expectException(ParserException::class);
         new Parser(\file_get_contents(__DIR__ . '/json/invalid-json.json'));
     }
-    
+
     /**
      * json:api rules violation 
      *
@@ -81,6 +81,6 @@ class ParserTest extends TestCase
     public function testInvalidJsonApiException()
     {
         $this->expectException(ParserException::class);
-        new Parser(\file_get_contents(__DIR__.'/json/json-api-error.json'));
+        new Parser(\file_get_contents(__DIR__ . '/json/json-api-error.json'));
     }
 }
