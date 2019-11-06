@@ -69,9 +69,9 @@ class Document implements Iterator
     /**
      * interface valid method
      *
-     * @return void
+     * @return bool
      */
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->data[$this->position]);
     }
@@ -125,5 +125,20 @@ class Document implements Iterator
     public function count(): int
     {
         return count($this->data);
+    }
+
+    /**
+     * check has a specific item
+     *
+     * @return bool
+     * @since 1.0.0
+     */
+    public function has(int $i): bool
+    {
+        $tmp = $this->position;
+        $this->position = $i;
+        $valid = $this->valid();
+        $this->position = $tmp;
+        return $valid;
     }
 }

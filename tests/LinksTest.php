@@ -9,7 +9,11 @@ use JsonApiParser\Parser;
 
 class LinksTest extends TestCase
 {
-
+    /**
+     * links container
+     *
+     * @var Links
+     */
     private $links;
 
     public function __construct()
@@ -19,17 +23,32 @@ class LinksTest extends TestCase
         $this->links = $parser->links();
     }
 
+    /**
+     * instance of
+     *
+     * @return void
+     */
     public function testInstanceType()
     {
         $this->assertInstanceOf(Links::class, $this->links);
     }
 
+    /**
+     * test single item
+     *
+     * @return void
+     */
     public function testItem()
     {
         $this->assertEquals("http://example.com/articles", $this->links->self);
         $this->assertEquals(null, $this->links->related);
-    }
+    }  
 
+    /**
+     * all items
+     *
+     * @return void
+     */
     public function testAllLinks()
     {
         $all = $this->links->all();
@@ -42,6 +61,11 @@ class LinksTest extends TestCase
         $this->assertEquals($test, $all);
     }
 
+    /**
+     * test undefined by method
+     *
+     * @return void
+     */
     public function testUndefinedObject()
     {
         $this->expectException(ParserException::class);

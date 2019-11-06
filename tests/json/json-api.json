@@ -96,14 +96,14 @@
         },
         {
             "type": "people",
-            "id": "9",
+            "id": "2",
             "attributes": {
-                "firstName": "Dan",
-                "lastName": "Gebhardt",
-                "twitter": "dgeb"
+                "firstName": "Dan2",
+                "lastName": "Gebhardt2",
+                "twitter": "dgeb2"
             },
             "links": {
-                "self": "http://example.com/people/9"
+                "self": "http://example.com/people/2"
             }
         },
         {

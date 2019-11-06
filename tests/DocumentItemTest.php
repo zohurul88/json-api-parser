@@ -2,13 +2,19 @@
 
 namespace JsonApiParser\Tests;
 
+use JsonApiParser\Collections\Document;
 use JsonApiParser\Collections\Links;
-use PHPUnit\Framework\TestCase;
 use JsonApiParser\Parser;
+use PHPUnit\Framework\TestCase;
 
 class DocumentItemTest extends TestCase
 {
 
+    /**
+     * the document container
+     *
+     * @var Document
+     */
     private $document;
 
     public function __construct()
@@ -18,6 +24,11 @@ class DocumentItemTest extends TestCase
         $this->document = $parser->data();
     }
 
+    /**
+     * Test element id and type
+     *
+     * @return void
+     */
     public function testIdType()
     {
         $item = $this->document->get(0);
@@ -25,6 +36,11 @@ class DocumentItemTest extends TestCase
         $this->assertEquals("articles", $item->type());
     }
 
+    /**
+     * Test attributes and contain
+     *
+     * @return void
+     */
     public function testAttributesContain()
     {
         $item = $this->document->get(0);
@@ -37,6 +53,11 @@ class DocumentItemTest extends TestCase
         $this->assertEquals("JSON:API paints my bikeshed!", $item->attribute()->title);
     }
 
+    /**
+     * Test the links
+     *
+     * @return void
+     */
     public function testLinks()
     {
         $item = $this->document->get(0);
@@ -46,12 +67,22 @@ class DocumentItemTest extends TestCase
         $this->assertEquals("http://example.com/articles/1", $item->links()->self);
     }
 
+    /**
+     * Testing the relationships
+     *
+     * @return void
+     */
     public function testRelationship()
     {
         $item = $this->document->get(0);
         $this->assertInstanceOf(Parser::class, $item->relationships("author"));
     }
 
+    /**
+     * test get keys
+     *
+     * @return void
+     */
     public function testKeys()
     {
         $item = $this->document->get(0);
@@ -60,8 +91,14 @@ class DocumentItemTest extends TestCase
         $this->assertTrue($this->arraysAreSimilar(['author', 'comments'], $item->getKeys('relationships')));
     }
 
-
-    public function arraysAreSimilar($a, $b)
+    /**
+     * testing if the two array are same
+     *
+     * @param array $a
+     * @param array $b
+     * @return void
+     */
+    public function arraysAreSimilar(array $a, array $b)
     {
         if (count(array_diff_assoc($a, $b))) {
             return false;

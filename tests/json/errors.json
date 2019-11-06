@@ -1,7 +1,6 @@
 {
     "jsonapi": { "version": "1.0" },
-    "errors": [{
-            "code": "123",
+    "errors": [{ 
             "source": { "pointer": "/data/attributes/firstName" },
             "title": "Value is too short",
             "detail": "First name must contain at least three characters."

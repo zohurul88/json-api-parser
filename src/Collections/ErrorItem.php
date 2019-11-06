@@ -17,7 +17,7 @@ class ErrorItem
      *
      * @param array $error
      */
-    public function __construct(array $error)
+    public function __construct(\stdClass $error)
     {
         $this->error = $error;
     }
@@ -36,10 +36,10 @@ class ErrorItem
     /**
      * error source
      *
-     * @return string|null
+     * @return stdClass|null
      * @since 1.0.0
      */
-    public function source(): ?string
+    public function source(): ?\stdClass
     {
         return $this->error->source ?? null;
     }

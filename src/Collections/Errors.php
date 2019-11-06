@@ -2,43 +2,87 @@
 namespace JsonApiParser\Collections;
 
 use Iterator;
+use JsonApiParser\Exceptions\ParserException;
 
 class Errors implements Iterator
 {
-    private $errors;
+    /**
+     * errors container
+     *
+     * @var array
+     * @since 1.0.0
+     */
+    private $data;
 
-    public function __construct(array $errors)
+    /**
+     * Errors Constructor
+     *
+     * @param array $errors
+     */
+    public function __construct(array $data)
     {
-        $this->errors = $errors;
+        $this->data = $data;
         $this->position = 0;
     }
 
+    /**
+     * interface rewind method
+     *
+     * @return void
+     */
     public function rewind()
     {
         $this->position = 0;
     }
 
-    public function current()
+    /**
+     * interface current method
+     *
+     * @return ErrorItem
+     */
+    public function current(): ErrorItem
     {
-        return new ErrorItem($this->errors[$this->position]);
+        return new ErrorItem($this->data[$this->position]);
     }
 
-    public function key()
+    /**
+     * interface key method
+     *
+     * @return integer
+     */
+    public function key(): int
     {
         return $this->position;
     }
 
+    /**
+     * interface next method
+     *
+     * @return void
+     */
     public function next()
     {
         ++$this->position;
     }
 
-    public function valid()
+    /**
+     * interface valid method
+     *
+     * @return bool
+     */
+    public function valid(): bool
     {
         return isset($this->data[$this->position]);
     }
 
-    public function get(int $i)
+    /**
+     * Get a specific error item
+     *
+     * @param integer $i
+     * @return ErrorItem
+     * @since 1.0.0
+     */
+    public function get(int $i): ErrorItem
     {
         $tmp = $this->position;
         $this->position = $i;
@@ -49,14 +93,37 @@ class Errors implements Iterator
         throw new ParserException("{$i} index is undefined");
     }
 
-    public function first()
+    /**
+     * Get the first error item
+     *
+     * @return ErrorItem
+     * @since 1.0.0
+     */
+    public function first(): ErrorItem
     {
         return $this->get(0);
     }
 
-    public function last()
+    /**
+     * get the last error item
+     *
+     * @return ErrorItem
+     * @since 1.0.0
+     */
+    public function last(): ErrorItem
     {
-        return $this->get(count($this->errors) - 1);
+        return $this->get(count($this->data) - 1);
+    }
+
+    /**
+     * get count of errors
+     *
+     * @return integer
+     * @since 1.0.0
+     */
+    public function count(): int
+    {
+        return count($this->data);
     }
 
 }

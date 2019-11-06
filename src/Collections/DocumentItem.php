@@ -11,7 +11,7 @@ class DocumentItem
 
     private $index = null;
 
-    public function __construct(\stdClass $item, int $index)
+    public function __construct(\stdClass $item, int $index = 0)
     {
         $this->item = (array) $item;
         $this->index = $index;
@@ -69,8 +69,12 @@ class DocumentItem
      */
     public function attribute(): ?\stdClass
     {
-        if ($this->contain("attributes")) return $this->item['attributes'];
-        else throw new Exception("Attributes not included to this document");
+        if ($this->contain("attributes")) {
+            return $this->item['attributes'];
+        } else {
+            throw new Exception("Attributes not included to this document");
+        }
+
     }
 
     /**

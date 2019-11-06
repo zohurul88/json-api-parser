@@ -23,7 +23,7 @@ class Parser extends ParserAbstract
      * @var integer
      * @ignore 
      */
-    private $includedInitCount = 0;
+    public $includedInitCount = 0;
 
     /**
      * Parser data object block
