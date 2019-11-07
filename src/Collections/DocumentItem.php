@@ -17,6 +17,11 @@ class DocumentItem
         $this->index = $index;
     }
 
+    public function __call($name, $arguments)
+    {
+        return $this->findTheRelationalData($name, $arguments);
+    }
+
     /**
      * current index
      *
@@ -112,7 +117,13 @@ class DocumentItem
         return isset($this->item[$identifier]->{$name});
     }
 
-    public function relationships($name)
+    /**
+     * get a relationship
+     *
+     * @param string $name
+     * @return Parser
+     */
+    public function relationships(string $name): Parser
     {
         if (!$this->contain("relationships", $name)) {
             throw new ParserException("Relationship Not found.");
@@ -120,5 +131,10 @@ class DocumentItem
 
         $relationship = $this->item['relationships']->{$name};
         return new Parser(json_encode($relationship));
+    }
+
+    public function findTheRelationalData(string $name, array $arguments)
+    { 
+        return Included::get($name, $this->id())->first();
     }
 }

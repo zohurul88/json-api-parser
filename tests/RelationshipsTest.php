@@ -29,7 +29,7 @@ class RelationshipsTest extends TestCase
         $item = $this->document->get(0);
         $comments = $item->relationships('comments');
         $this->assertInstanceOf(Parser::class, $comments);
-
+        
         $commentsItem = $this->parser->included()->get($comments->data()->get(0)->type(), $comments->data()->get(0)->id());
 
         $this->assertSame("comments", $comments->data()->get(0)->type());

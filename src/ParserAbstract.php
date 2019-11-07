@@ -88,7 +88,7 @@ abstract class ParserAbstract
      * @return JsonApiParser\Collections\Relations
      * @since 1.0.0
      */
-    abstract public function included(): JsonApiParser\Collections\Relations;
+    abstract public function included(): ?JsonApiParser\Collections\Relations;
 
     /**
      * is it a valid json string 

@@ -46,4 +46,9 @@ class Relations
     {
         return new DocumentItem($this->items[$this->sortItems[$type][$id]]) ?? null;
     }
+
+    public function getSortedItem()
+    {
+        return $this->sortItems;
+    }
 }

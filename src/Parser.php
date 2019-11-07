@@ -4,6 +4,7 @@ namespace JsonApiParser;
 
 use JsonApiParser\Collections\Document;
 use JsonApiParser\Collections\Errors;
+use JsonApiParser\Collections\Included;
 use JsonApiParser\Collections\Links;
 use JsonApiParser\Collections\Relations;
 
@@ -15,13 +16,13 @@ class Parser extends ParserAbstract
      * @var Relations
      * @since 1.0.0
      */
-    private $included = null;
+    protected $included = null;
 
     /**
      * For test purpose
      *
      * @var integer
-     * @ignore 
+     * @ignore
      */
     public $includedInitCount = 0;
 
@@ -73,10 +74,25 @@ class Parser extends ParserAbstract
      */
     public function included(): Relations
     {
+        if (!isset($this->rawObject->data)) {
+            return null;
+        }
         if (is_null($this->included)) {
             $this->includedInitCount++;
             $this->included = new Relations($this->rawObject->included);
+            Included::set($this->rawObject->included, false);
+            Included::setSorted($this->included->getSortedItem());
         }
         return $this->included;
+    }
+
+    public function meta(): ?\stdClass
+    {
+        return $this->rawObject->meta ?? null;
+    }
+
+    public function version(): ?string
+    {
+        return $this->rawObject->jsonapi->version ?? null;
     }
 }
