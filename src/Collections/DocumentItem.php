@@ -134,7 +134,7 @@ class DocumentItem
     }
 
     public function findTheRelationalData(string $name, array $arguments)
-    { 
-        return Included::get($name, $this->id())->first();
+    {
+        return Included::get($name, $arguments[0]['id'] ?? $this->id())->first();
     }
 }
